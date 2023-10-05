@@ -10,6 +10,7 @@ unsigned char image[SIZE][SIZE];
 
 void loadImage ();
 void saveImage ();
+void BlackAndWhiteFilter ();
 
 int main()
 {
@@ -35,6 +36,9 @@ int main()
               "0- Exit\n";
         char c; cin>>c;
         switch (c) {
+            case '1':
+                BlackAndWhiteFilter();
+                break;
             case '0':
                 saveImage();
                 return 0;
@@ -60,4 +64,16 @@ void saveImage () {
 
     strcat (imageFileName, ".bmp");
     writeGSBMP(imageFileName, image);
+}
+
+void BlackAndWhiteFilter () {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j< SIZE; j++) {
+            if (image[i][j] > 127)
+                image[i][j] = 255;
+            else
+                image[i][j] = 0;
+
+        }
+    }
 }
