@@ -14,6 +14,7 @@ void saveImage ();
 void BlackAndWhiteFilter ();
 void merged();
 void darken_lighten();
+void FlipImage ();
 
 int main()
 {
@@ -45,6 +46,9 @@ int main()
                 break;
             case '3':
                 merged();
+                break;
+            case '4':
+                FlipImage();
                 break;
             case '6':
                 darken_lighten();
@@ -107,6 +111,31 @@ void merged(){
             image[i][j] = (image[i][j] + merge[i][j]) / 2;
         }
     }
+}
+
+void flipHorizontally() {
+    for (int i = 0; i < SIZE/2; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            swap(image[i][j] , image[SIZE-i-1][j]);
+        }
+    }
+}
+
+void flipVertically() {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE/2; j++) {
+            swap(image[i][j] , image[i][SIZE-j-1]);
+        }
+    }
+}
+
+void FlipImage(){
+    cout<<"Flip (h)orizontally or (v)ertically ? ";
+    char c; cin >> c;
+    if (c == 'h')
+        flipHorizontally();
+    else
+        flipVertically();
 }
 
 void darkenFilter() {
