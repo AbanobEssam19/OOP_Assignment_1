@@ -7,13 +7,18 @@
 using namespace std;
 
 unsigned char image[SIZE][SIZE];
+unsigned char merge[SIZE][SIZE];
 
 void loadImage ();
 void saveImage ();
 void BlackAndWhiteFilter ();
+void load_merge();
+void merged();
+void darken_lighten();
 
 int main()
 {
+    cout << "Welcome to The Filters Program :) \n";
     loadImage();
     while (true) {
         cout<<"Please select a filter to apply or 0 to exit: "<<'\n';
@@ -39,6 +44,11 @@ int main()
             case '1':
                 BlackAndWhiteFilter();
                 break;
+            case '3':
+                merged();
+                break;
+            case '6':
+                darken_lighten();
             case '0':
                 saveImage();
                 return 0;
@@ -66,6 +76,16 @@ void saveImage () {
     writeGSBMP(imageFileName, image);
 }
 
+void load_merge(){
+    char merged_image[100];
+
+    cout << "Enter the image to merge with: ";
+    cin >> merged_image;
+
+    strcat (merged_image, ".bmp");
+    readGSBMP(merged_image, merge);
+}
+
 void BlackAndWhiteFilter () {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j< SIZE; j++) {
@@ -77,3 +97,35 @@ void BlackAndWhiteFilter () {
         }
     }
 }
+
+void merged(){
+    load_merge();
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = (image[i][j] + merge[i][j]) / 2;
+        }
+    }
+}
+
+void darken_lighten(){
+    cout << "Choose your option: \n" << "1] Darken\n2] Lighten \n";
+    int option; cin >> option;
+    switch (option) {
+        case 1:
+            for (int i = 0; i < SIZE; ++i) {
+                for (int j = 0; j < SIZE; ++j) {
+                    image[i][j] -= image[i][j] / 2;
+                }
+            }
+            break;
+        case 2:
+            for (int i = 0; i < SIZE; ++i) {
+                for (int j = 0; j < SIZE; ++j) {
+                    image[i][j] /= 2;
+                    image[i][j] +=  + 127;
+                }
+            }
+            break;
+    }
+}
+

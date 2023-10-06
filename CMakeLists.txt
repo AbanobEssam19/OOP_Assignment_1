@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.26)
-project(OOP_Assignment_1)
+project(Assignment1_OOP)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 
-include_directories(.)
-
-add_executable(OOP_Assignment_1
-        main.cpp)
+add_executable(Assignment1_OOP main.cpp)
