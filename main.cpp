@@ -15,6 +15,8 @@ void BlackAndWhiteFilter ();
 void merged();
 void darken_lighten();
 void FlipImage ();
+void rotation();
+void invert(int c);
 
 int main()
 {
@@ -167,4 +169,31 @@ void darken_lighten(){
             break;
     }
 }
+void rotation(int n){
+   for(int i=0;i<SIZE;i++){
+      for(int j=0;j<SIZE;j++){
+         temp[i][j]=image[i][j];
+      }
+   }
+   int c=n/90;
+   while(c--){
+      for(int i=0;i<SIZE;i++){
+      for(int j=0;j<SIZE;j++){
+         temp[i][j]=image[i][j];
+      }
+   }
+      for(int i=0;i<SIZE;i++){
+      for(int j=0;j<SIZE;j++){
+         image[i][j]=temp[SIZE - j - 1][i];
+      }
+   }
 
+   }
+}
+void invert(){
+   for(int i=0;i<SIZE;i++){
+      for(int j=0;j<SIZE;j++){
+      image[i][j]=255-image[i][j];
+   }
+}
+}
