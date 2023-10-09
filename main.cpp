@@ -1,3 +1,10 @@
+/*
+ * FCAI – OOP Programming – 2023 - Assignment 1
+ * Author1 and ID and Group: Abanob Essam - 20220002
+ * Author2 and ID and Group: Martin Amgad - 20220263
+ * Author3 and ID and Group: Marcelino Maximos - 20220264
+ */
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -6,19 +13,25 @@
 
 using namespace std;
 
+// The used Images
 unsigned char image[SIZE][SIZE];
 unsigned char merge[SIZE][SIZE];
+unsigned char temp[SIZE][SIZE];
 
+// The Filters functions prototype
 void loadImage ();
 void saveImage ();
-void BlackAndWhiteFilter ();
+void blackAndWhiteFilter ();
 void merged();
-void darken_lighten();
-void FlipImage ();
+void darkenLighten();
+void flipImage ();
+void rotation();
+void invert();
 
 int main()
 {
-    cout << "Welcome to The Filters Program :) \n";
+    // The program interface
+    cout << "Welcome to The Filters Program :)\n";
     loadImage();
     while (true) {
         cout<<"Please select a filter to apply or 0 to exit: "<<'\n';
@@ -28,30 +41,27 @@ int main()
               "4- Flip Image\n"
               "5- Rotate Image\n"
               "6- Darken and Lighten Image\n"
-              "7- Detect Image Edges \n"
-              "8- Enlarge Image\n"
-              "9- Shrink Image\n"
-              "a- Mirror 1/2 Image\n"
-              "b- Shuffle Image\n"
-              "c- Blur Image\n"
-              "d- Crop Image\n"
-              "e- Skew Image Right\n"
-              "f- Skew Image Up\n"
               "s- Save the image to a file\n"
               "0- Exit\n";
         char c; cin>>c;
         switch (c) {
             case '1':
-                BlackAndWhiteFilter();
+                blackAndWhiteFilter();
+                break;
+            case '2':
+                invert();
                 break;
             case '3':
                 merged();
                 break;
             case '4':
-                FlipImage();
+                flipImage();
+                break;
+            case '5':
+                rotation();
                 break;
             case '6':
-                darken_lighten();
+                darkenLighten();
                 break;
             case 's':
                 saveImage();
@@ -62,6 +72,7 @@ int main()
     }
 }
 
+// The used functions
 void loadImage () {
     char imageFileName[100];
 
@@ -82,7 +93,7 @@ void saveImage () {
     writeGSBMP(imageFileName, image);
 }
 
-void BlackAndWhiteFilter () {
+void blackAndWhiteFilter () {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j< SIZE; j++) {
             if (image[i][j] > 127)
@@ -90,6 +101,14 @@ void BlackAndWhiteFilter () {
             else
                 image[i][j] = 0;
 
+        }
+    }
+}
+
+void invert(){
+    for(int i=0;i<SIZE;i++){
+        for(int j=0;j<SIZE;j++){
+            image[i][j]=255-image[i][j];
         }
     }
 }
@@ -129,13 +148,32 @@ void flipVertically() {
     }
 }
 
-void FlipImage(){
+void flipImage(){
     cout<<"Flip (h)orizontally or (v)ertically ? ";
     char c; cin >> c;
     if (c == 'h')
         flipHorizontally();
     else
         flipVertically();
+}
+
+void rotation() {
+    int rotate_angle;
+    cout << "Choose the angle of rotation 90 or 180 or 270:";
+    cin >> rotate_angle;
+    int c = rotate_angle / 90;
+    while (c--) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                temp[i][j] = image[i][j];
+            }
+        }
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                image[i][j] = temp[SIZE - j - 1][i];
+            }
+        }
+    }
 }
 
 void darkenFilter() {
@@ -155,7 +193,7 @@ void lightenFilter() {
     }
 }
 
-void darken_lighten(){
+void darkenLighten(){
     cout << "Choose your option: \n" << "1] Darken\n2] Lighten \n";
     int option; cin >> option;
     switch (option) {
