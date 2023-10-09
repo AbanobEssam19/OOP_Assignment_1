@@ -1,3 +1,20 @@
+<<<<<<< Updated upstream
+/*
+ * FCAI – OOP Programming – 2023 - Assignment 1
+ * Author1 and ID and Group: Abanoub Essam - 20220002
+ * Author2 and ID and Group: Martin Amgad - 20220263
+ * Author3 and ID and Group: Marcelino Maximos - 20220264
+ */
+=======
+/* FCAI - OOP programing - 2023 - Assignment 1
+ * Author1 and ID: Abanoub Essam - 20220002
+ * Author2 and ID: Martin Amgad - 20220263
+ * Author3 and ID: Marcelino Maximos - 20220264
+*/
+
+//--------------------------------------------------------------\\
+>>>>>>> Stashed changes
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -6,19 +23,46 @@
 
 using namespace std;
 
+<<<<<<< Updated upstream
+// The used images
+=======
+// The used Images
+>>>>>>> Stashed changes
 unsigned char image[SIZE][SIZE];
 unsigned char merge[SIZE][SIZE];
+unsigned char temp[SIZE][SIZE];
 
+<<<<<<< Updated upstream
+//The functions prototype
+=======
+// The Filters functions prototype
+>>>>>>> Stashed changes
 void loadImage ();
 void saveImage ();
 void BlackAndWhiteFilter ();
 void merged();
 void darken_lighten();
 void FlipImage ();
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+void rotation(int n);
+void invert();
+>>>>>>> Stashed changes
 
 int main()
 {
+    //The program interface
     cout << "Welcome to The Filters Program :) \n";
+=======
+void invert();
+void rotation(int n);
+
+int main()
+{
+    // The program interface
+    cout << "Welcome to The Filters Program :)\n";
+>>>>>>> Stashed changes
     loadImage();
     while (true) {
         cout<<"Please select a filter to apply or 0 to exit: "<<'\n';
@@ -44,12 +88,19 @@ int main()
             case '1':
                 BlackAndWhiteFilter();
                 break;
+            case '2':
+                invert();
             case '3':
                 merged();
                 break;
             case '4':
                 FlipImage();
                 break;
+            case '5':
+                int rotate_angle;
+                cout << "Choose the angle of rotation 90 or 180 or 270:";
+                cin >> rotate_angle;
+                rotation(rotate_angle);
             case '6':
                 darken_lighten();
                 break;
@@ -61,7 +112,12 @@ int main()
         }
     }
 }
+<<<<<<< Updated upstream
+//The functions
+=======
 
+// The used functions
+>>>>>>> Stashed changes
 void loadImage () {
     char imageFileName[100];
 
@@ -167,4 +223,66 @@ void darken_lighten(){
             break;
     }
 }
+<<<<<<< Updated upstream
 
+=======
+void rotation(int n) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            temp[i][j] = image[i][j];
+        }
+    }
+    int c = n / 90;
+    while (c--) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                temp[i][j] = image[i][j];
+            }
+        }
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                image[i][j] = temp[SIZE - j - 1][i];
+            }
+        }
+    }
+}
+
+<<<<<<< Updated upstream
+void rotation(int n){
+   for(int i=0;i<SIZE;i++){
+      for(int j=0;j<SIZE;j++){
+         temp[i][j]=image[i][j];
+      }
+   }
+   int c=n/90;
+   while(c--){
+      for(int i=0;i<SIZE;i++){
+      for(int j=0;j<SIZE;j++){
+         temp[i][j]=image[i][j];
+      }
+   }
+      for(int i=0;i<SIZE;i++){
+      for(int j=0;j<SIZE;j++){
+         image[i][j]=temp[SIZE - j - 1][i];
+      }
+   }
+   }
+}
+
+void invert(){
+   for(int i=0;i<SIZE;i++){
+      for(int j=0;j<SIZE;j++){
+      image[i][j]=255-image[i][j];
+   }
+}
+}
+=======
+void invert(){
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = 255 - image[i][j];
+        }
+    }
+}
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
