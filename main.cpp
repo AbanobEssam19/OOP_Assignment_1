@@ -27,6 +27,10 @@ void darkenLighten();
 void flipImage ();
 void rotation();
 void invert();
+void blur();
+void shrink();
+void skew_up();
+
 
 int main()
 {
@@ -62,6 +66,15 @@ int main()
                 break;
             case '6':
                 darkenLighten();
+                break;
+            case '9':
+                shrink();
+                break;
+            case 'c':
+                blur();
+                break;
+            case 'f':
+                skew_up();
                 break;
             case 's':
                 saveImage();
@@ -189,6 +202,7 @@ void lightenFilter() {
         for (int j = 0; j < SIZE; ++j) {
             image[i][j] /= 2;
             image[i][j] += 127;
+
         }
     }
 }
@@ -205,3 +219,80 @@ void darkenLighten(){
             break;
     }
 }
+
+void blur(){
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = (image[i][j] + image[i+1][j] + image[i+2][j] + image[i+3][j] + image[i+4][j] +
+                           image[i][j+1] + image[i][j+2] + image[i][j+3] + image[i][j+4]) / 9;
+        }
+    }
+}
+
+void shrink(){
+    float ratio;
+    unsigned char temp[SIZE][SIZE];
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            temp[i][j] = 255;
+        }
+    }
+    cout << "Enter the percentage of shrink 0.5 or 0.25 or 0.333333:";
+    cin >> ratio;
+    if(ratio == 0.5)
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                temp[i/2][j/2] = image[i][j];
+            }
+        }
+    else if(ratio == 0.25)
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                temp[i/4][j/4] = image[i][j];
+            }
+        }
+    else
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                temp[i/3][j/3] = image[i][j];
+            }
+        }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = temp[i][j];
+        }
+    }
+}
+
+void skew_up(){
+    double angle;
+    cout << "Enter the angle of skewness:";
+    cin >> angle;
+    double shift = 256 * tan((angle*22)/(180*7));
+    double copy_shift = shift;
+    double minus = shift / 256;
+    unsigned char temp[SIZE][SIZE+(int)shift];
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            temp[i][j] = 255;
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            temp[i][j+(int)shift] = image[i][j];
+        }
+        shift -= minus;
+    }
+    double shrink = (SIZE+copy_shift) / SIZE;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            temp[i/(int)shrink][j/(int)shrink] = image[i][j];
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = temp[i][j];
+        }
+    }
+}
+
