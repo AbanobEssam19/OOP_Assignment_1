@@ -23,18 +23,14 @@ void loadImage ();
 void saveImage ();
 void blackAndWhiteFilter ();
 void merged();
-<<<<<<< Updated upstream
 void darkenLighten();
 void flipImage ();
 void rotation();
 void invert();
-void darken_lighten();
-void FlipImage ();
-void rotation(int n);
-void invert();
 void blur();
 void shrink();
 void skew_up();
+
 
 int main()
 {
@@ -206,6 +202,7 @@ void lightenFilter() {
         for (int j = 0; j < SIZE; ++j) {
             image[i][j] /= 2;
             image[i][j] += 127;
+
         }
     }
 }
@@ -221,35 +218,6 @@ void darkenLighten(){
             lightenFilter();
             break;
     }
-}
-
-void rotation(int n) {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            temp[i][j] = image[i][j];
-        }
-    }
-    int c = n / 90;
-    while (c--) {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                temp[i][j] = image[i][j];
-            }
-        }
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                image[i][j] = temp[SIZE - j - 1][i];
-            }
-        }
-    }
-}
-
-void invert(){
-   for(int i=0;i<SIZE;i++){
-      for(int j=0;j<SIZE;j++){
-      image[i][j]=255-image[i][j];
-   }
-}
 }
 
 void blur(){
