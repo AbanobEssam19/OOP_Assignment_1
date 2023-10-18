@@ -27,6 +27,10 @@ void darkenLighten();
 void flipImage ();
 void rotation();
 void invert();
+void darken_lighten();
+void FlipImage ();
+void rotation(int n);
+void invert();
 void blur();
 void shrink();
 void skew_up();
@@ -220,6 +224,27 @@ void darkenLighten(){
     }
 }
 
+void rotation(int n) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            temp[i][j] = image[i][j];
+        }
+    }
+    int c = n / 90;
+    while (c--) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                temp[i][j] = image[i][j];
+            }
+        }
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                image[i][j] = temp[SIZE - j - 1][i];
+            }
+        }
+    }
+}
+
 void blur(){
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
@@ -273,7 +298,7 @@ void skew_up(){
     double minus = shift / 256;
     unsigned char temp[SIZE][SIZE+(int)shift];
     for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
+        for (int j = 0; j < SIZE+copy_shift; ++j) {
             temp[i][j] = 255;
         }
     }
@@ -285,14 +310,8 @@ void skew_up(){
     }
     double shrink = (SIZE+copy_shift) / SIZE;
     for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-            temp[i/(int)shrink][j/(int)shrink] = image[i][j];
-        }
-    }
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-            image[i][j] = temp[i][j];
+        for (int j = 0; j < SIZE + (int)copy_shift; ++j) {
+            image[i][(int)(j/shrink)] = temp[i][j];
         }
     }
 }
-
