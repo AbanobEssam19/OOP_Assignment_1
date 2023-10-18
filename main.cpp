@@ -22,18 +22,17 @@ unsigned char temp[SIZE][SIZE];
 void loadImage ();
 void saveImage ();
 void blackAndWhiteFilter ();
-void merged();
-void darkenLighten();
+void invert ();
+void merged ();
 void flipImage ();
-void rotation();
-void invert();
-void darken_lighten();
-void FlipImage ();
-void rotation(int n);
-void invert();
-void blur();
-void shrink();
-void skew_up();
+void rotation ();
+void darkenLighten ();
+void edgeDetector ();
+void shrink ();
+void mirrorFilter ();
+void blur ();
+void cropImage ();
+void skewUp ();
 
 
 int main()
@@ -49,6 +48,15 @@ int main()
               "4- Flip Image\n"
               "5- Rotate Image\n"
               "6- Darken and Lighten Image\n"
+              "7- Detect Image Edges \n"
+              "8- Enlarge Image\n"
+              "9- Shrink Image\n"
+              "a- Mirror 1/2 Image\n"
+              "b- Shuffle Image\n"
+              "c- Blur Image\n"
+              "d- Crop Image\n"
+              "e- Skew Image Right  \n"
+              "f- Skew Image Up  "
               "s- Save the image to a file\n"
               "0- Exit\n";
         char c; cin>>c;
@@ -71,14 +79,23 @@ int main()
             case '6':
                 darkenLighten();
                 break;
+            case '7':
+                edgeDetector();
+                break;
             case '9':
                 shrink();
+                break;
+            case 'a':
+                mirrorFilter();
                 break;
             case 'c':
                 blur();
                 break;
+            case 'd':
+                cropImage();
+                break;
             case 'f':
-                skew_up();
+                skewUp();
                 break;
             case 's':
                 saveImage();
@@ -206,7 +223,6 @@ void lightenFilter() {
         for (int j = 0; j < SIZE; ++j) {
             image[i][j] /= 2;
             image[i][j] += 127;
-
         }
     }
 }
@@ -224,32 +240,73 @@ void darkenLighten(){
     }
 }
 
-void rotation(int n) {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
+void copyingTheImage() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
             temp[i][j] = image[i][j];
         }
     }
-    int c = n / 90;
-    while (c--) {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                temp[i][j] = image[i][j];
+}
+
+void detectingLeftToRight() {
+    for (int i = 0; i < SIZE-1; i++) {
+        bool black;
+        if (image[i][0] == 255)
+            black = false;
+        else
+            black = true;
+        for (int j = 1; j < SIZE-1; j++) {
+            if (image[i][j] == 0) {
+                if (black) {
+                    image[i][j] = 255;
+                }
+                else
+                    black = true;
             }
-        }
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                image[i][j] = temp[SIZE - j - 1][i];
+            else {
+                if (black) {
+                    black = false;
+                    image[i][j-1] = 0;
+                }
             }
         }
     }
 }
 
-void blur(){
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-            image[i][j] = (image[i][j] + image[i+1][j] + image[i+2][j] + image[i+3][j] + image[i+4][j] +
-                           image[i][j+1] + image[i][j+2] + image[i][j+3] + image[i][j+4]) / 9;
+void detectingUpToDown() {
+    for (int i = 0; i < SIZE-1; i++) {
+        bool black;
+        if (temp[0][i] == 255)
+            black = false;
+        else
+            black = true;
+        for (int j = 1; j < SIZE-1; j++) {
+            if (temp[j][i] == 0) {
+                if (black) {
+                    temp[j][i] = 255;
+                }
+                else
+                    black = true;
+            }
+            else {
+                if (black) {
+                    black = false;
+                    temp[j][i-1] = 0;
+                }
+            }
+        }
+    }
+}
+
+void edgeDetector() {
+    blackAndWhiteFilter();
+    copyingTheImage();
+    detectingLeftToRight();
+    detectingUpToDown();
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (temp[i][j] == 0)
+                image[i][j] = 0;
         }
     }
 }
@@ -289,7 +346,87 @@ void shrink(){
     }
 }
 
-void skew_up(){
+void mirrorLeft() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE/2; ++j) {
+            image[i][SIZE-j-1] = image[i][j];
+        }
+    }
+}
+
+void mirrorRight() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE/2; ++j) {
+            image[i][j] = image[i][SIZE-j-1];
+        }
+    }
+}
+
+void mirrorUp() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE/2; ++j) {
+            image[SIZE-j-1][i] = image[j][i];
+        }
+    }
+}
+
+void mirrorDown() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE/2; ++j) {
+            image[j][i] = image[SIZE-j-1][i];
+        }
+    }
+}
+
+void mirrorFilter() {
+    cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side?\n";
+    char c; cin>>c;
+    switch (c) {
+        case 'l':
+            mirrorLeft();
+            break;
+        case 'r':
+            mirrorRight();
+            break;
+        case 'u':
+            mirrorUp();
+            break;
+        case 'd':
+            mirrorDown();
+            break;
+    }
+}
+
+void blur(){
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = (image[i][j] + image[i+1][j] + image[i+2][j] + image[i+3][j] + image[i+4][j] +
+                           image[i][j+1] + image[i][j+2] + image[i][j+3] + image[i][j+4]) / 9;
+        }
+    }
+}
+
+void cropImage() {
+    cout<<"Please enter x y l w: ";
+    int x,y,l,w; cin>>x>>y>>l>>w;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            temp[i][j] = 255;
+        }
+    }
+    for (int i = x; i < x+l; ++i) {
+        for (int j = y; j < y+w; ++j) {
+            temp[i][j] = image[i][j];
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = temp[i][j];
+        }
+    }
+}
+
+void skewUp(){
     double angle;
     cout << "Enter the angle of skewness:";
     cin >> angle;
