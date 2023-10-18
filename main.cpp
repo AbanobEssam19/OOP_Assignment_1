@@ -1,19 +1,9 @@
-<<<<<<< Updated upstream
 /*
  * FCAI – OOP Programming – 2023 - Assignment 1
- * Author1 and ID and Group: Abanoub Essam - 20220002
+ * Author1 and ID and Group: Abanob Essam - 20220002
  * Author2 and ID and Group: Martin Amgad - 20220263
  * Author3 and ID and Group: Marcelino Maximos - 20220264
  */
-=======
-/* FCAI - OOP programing - 2023 - Assignment 1
- * Author1 and ID: Abanoub Essam - 20220002
- * Author2 and ID: Martin Amgad - 20220263
- * Author3 and ID: Marcelino Maximos - 20220264
-*/
-
-//--------------------------------------------------------------\\
->>>>>>> Stashed changes
 
 #include <iostream>
 #include <fstream>
@@ -23,46 +13,32 @@
 
 using namespace std;
 
-<<<<<<< Updated upstream
-// The used images
-=======
 // The used Images
->>>>>>> Stashed changes
 unsigned char image[SIZE][SIZE];
 unsigned char merge[SIZE][SIZE];
 unsigned char temp[SIZE][SIZE];
 
-<<<<<<< Updated upstream
-//The functions prototype
-=======
 // The Filters functions prototype
->>>>>>> Stashed changes
 void loadImage ();
 void saveImage ();
-void BlackAndWhiteFilter ();
-void merged();
-void darken_lighten();
-void FlipImage ();
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-void rotation(int n);
-void invert();
->>>>>>> Stashed changes
+void blackAndWhiteFilter ();
+void invert ();
+void merged ();
+void flipImage ();
+void rotation ();
+void darkenLighten ();
+void edgeDetector ();
+void shrink ();
+void mirrorFilter ();
+void blur ();
+void cropImage ();
+void skewUp ();
 
-int main()
-{
-    //The program interface
-    cout << "Welcome to The Filters Program :) \n";
-=======
-void invert();
-void rotation(int n);
 
 int main()
 {
     // The program interface
     cout << "Welcome to The Filters Program :)\n";
->>>>>>> Stashed changes
     loadImage();
     while (true) {
         cout<<"Please select a filter to apply or 0 to exit: "<<'\n';
@@ -79,30 +55,47 @@ int main()
               "b- Shuffle Image\n"
               "c- Blur Image\n"
               "d- Crop Image\n"
-              "e- Skew Image Right\n"
-              "f- Skew Image Up\n"
+              "e- Skew Image Right  \n"
+              "f- Skew Image Up  "
               "s- Save the image to a file\n"
               "0- Exit\n";
         char c; cin>>c;
         switch (c) {
             case '1':
-                BlackAndWhiteFilter();
+                blackAndWhiteFilter();
                 break;
             case '2':
                 invert();
+                break;
             case '3':
                 merged();
                 break;
             case '4':
-                FlipImage();
+                flipImage();
                 break;
             case '5':
-                int rotate_angle;
-                cout << "Choose the angle of rotation 90 or 180 or 270:";
-                cin >> rotate_angle;
-                rotation(rotate_angle);
+                rotation();
+                break;
             case '6':
-                darken_lighten();
+                darkenLighten();
+                break;
+            case '7':
+                edgeDetector();
+                break;
+            case '9':
+                shrink();
+                break;
+            case 'a':
+                mirrorFilter();
+                break;
+            case 'c':
+                blur();
+                break;
+            case 'd':
+                cropImage();
+                break;
+            case 'f':
+                skewUp();
                 break;
             case 's':
                 saveImage();
@@ -112,12 +105,8 @@ int main()
         }
     }
 }
-<<<<<<< Updated upstream
-//The functions
-=======
 
 // The used functions
->>>>>>> Stashed changes
 void loadImage () {
     char imageFileName[100];
 
@@ -138,7 +127,7 @@ void saveImage () {
     writeGSBMP(imageFileName, image);
 }
 
-void BlackAndWhiteFilter () {
+void blackAndWhiteFilter () {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j< SIZE; j++) {
             if (image[i][j] > 127)
@@ -146,6 +135,14 @@ void BlackAndWhiteFilter () {
             else
                 image[i][j] = 0;
 
+        }
+    }
+}
+
+void invert(){
+    for(int i=0;i<SIZE;i++){
+        for(int j=0;j<SIZE;j++){
+            image[i][j]=255-image[i][j];
         }
     }
 }
@@ -185,13 +182,32 @@ void flipVertically() {
     }
 }
 
-void FlipImage(){
+void flipImage(){
     cout<<"Flip (h)orizontally or (v)ertically ? ";
     char c; cin >> c;
     if (c == 'h')
         flipHorizontally();
     else
         flipVertically();
+}
+
+void rotation() {
+    int rotate_angle;
+    cout << "Choose the angle of rotation 90 or 180 or 270:";
+    cin >> rotate_angle;
+    int c = rotate_angle / 90;
+    while (c--) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                temp[i][j] = image[i][j];
+            }
+        }
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                image[i][j] = temp[SIZE - j - 1][i];
+            }
+        }
+    }
 }
 
 void darkenFilter() {
@@ -211,7 +227,7 @@ void lightenFilter() {
     }
 }
 
-void darken_lighten(){
+void darkenLighten(){
     cout << "Choose your option: \n" << "1] Darken\n2] Lighten \n";
     int option; cin >> option;
     switch (option) {
@@ -223,66 +239,216 @@ void darken_lighten(){
             break;
     }
 }
-<<<<<<< Updated upstream
 
-=======
-void rotation(int n) {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
+void copyingTheImage() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
             temp[i][j] = image[i][j];
         }
     }
-    int c = n / 90;
-    while (c--) {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                temp[i][j] = image[i][j];
+}
+
+void detectingLeftToRight() {
+    for (int i = 0; i < SIZE-1; i++) {
+        bool black;
+        if (image[i][0] == 255)
+            black = false;
+        else
+            black = true;
+        for (int j = 1; j < SIZE-1; j++) {
+            if (image[i][j] == 0) {
+                if (black) {
+                    image[i][j] = 255;
+                }
+                else
+                    black = true;
             }
-        }
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                image[i][j] = temp[SIZE - j - 1][i];
+            else {
+                if (black) {
+                    black = false;
+                    image[i][j-1] = 0;
+                }
             }
         }
     }
 }
 
-<<<<<<< Updated upstream
-void rotation(int n){
-   for(int i=0;i<SIZE;i++){
-      for(int j=0;j<SIZE;j++){
-         temp[i][j]=image[i][j];
-      }
-   }
-   int c=n/90;
-   while(c--){
-      for(int i=0;i<SIZE;i++){
-      for(int j=0;j<SIZE;j++){
-         temp[i][j]=image[i][j];
-      }
-   }
-      for(int i=0;i<SIZE;i++){
-      for(int j=0;j<SIZE;j++){
-         image[i][j]=temp[SIZE - j - 1][i];
-      }
-   }
-   }
+void detectingUpToDown() {
+    for (int i = 0; i < SIZE-1; i++) {
+        bool black;
+        if (temp[0][i] == 255)
+            black = false;
+        else
+            black = true;
+        for (int j = 1; j < SIZE-1; j++) {
+            if (temp[j][i] == 0) {
+                if (black) {
+                    temp[j][i] = 255;
+                }
+                else
+                    black = true;
+            }
+            else {
+                if (black) {
+                    black = false;
+                    temp[j][i-1] = 0;
+                }
+            }
+        }
+    }
 }
 
-void invert(){
-   for(int i=0;i<SIZE;i++){
-      for(int j=0;j<SIZE;j++){
-      image[i][j]=255-image[i][j];
-   }
-}
-}
-=======
-void invert(){
+void edgeDetector() {
+    blackAndWhiteFilter();
+    copyingTheImage();
+    detectingLeftToRight();
+    detectingUpToDown();
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            image[i][j] = 255 - image[i][j];
+            if (temp[i][j] == 0)
+                image[i][j] = 0;
         }
     }
 }
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+
+void shrink(){
+    float ratio;
+    unsigned char temp[SIZE][SIZE];
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            temp[i][j] = 255;
+        }
+    }
+    cout << "Enter the percentage of shrink 0.5 or 0.25 or 0.333333:";
+    cin >> ratio;
+    if(ratio == 0.5)
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                temp[i/2][j/2] = image[i][j];
+            }
+        }
+    else if(ratio == 0.25)
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                temp[i/4][j/4] = image[i][j];
+            }
+        }
+    else
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                temp[i/3][j/3] = image[i][j];
+            }
+        }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = temp[i][j];
+        }
+    }
+}
+
+void mirrorLeft() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE/2; ++j) {
+            image[i][SIZE-j-1] = image[i][j];
+        }
+    }
+}
+
+void mirrorRight() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE/2; ++j) {
+            image[i][j] = image[i][SIZE-j-1];
+        }
+    }
+}
+
+void mirrorUp() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE/2; ++j) {
+            image[SIZE-j-1][i] = image[j][i];
+        }
+    }
+}
+
+void mirrorDown() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE/2; ++j) {
+            image[j][i] = image[SIZE-j-1][i];
+        }
+    }
+}
+
+void mirrorFilter() {
+    cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side?\n";
+    char c; cin>>c;
+    switch (c) {
+        case 'l':
+            mirrorLeft();
+            break;
+        case 'r':
+            mirrorRight();
+            break;
+        case 'u':
+            mirrorUp();
+            break;
+        case 'd':
+            mirrorDown();
+            break;
+    }
+}
+
+void blur(){
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = (image[i][j] + image[i+1][j] + image[i+2][j] + image[i+3][j] + image[i+4][j] +
+                           image[i][j+1] + image[i][j+2] + image[i][j+3] + image[i][j+4]) / 9;
+        }
+    }
+}
+
+void cropImage() {
+    cout<<"Please enter x y l w: ";
+    int x,y,l,w; cin>>x>>y>>l>>w;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            temp[i][j] = 255;
+        }
+    }
+    for (int i = x; i < x+l; ++i) {
+        for (int j = y; j < y+w; ++j) {
+            temp[i][j] = image[i][j];
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = temp[i][j];
+        }
+    }
+}
+
+void skewUp(){
+    double angle;
+    cout << "Enter the angle of skewness:";
+    cin >> angle;
+    double shift = 256 * tan((angle*22)/(180*7));
+    double copy_shift = shift;
+    double minus = shift / 256;
+    unsigned char temp[SIZE][SIZE+(int)shift];
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE+copy_shift; ++j) {
+            temp[i][j] = 255;
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            temp[i][j+(int)shift] = image[i][j];
+        }
+        shift -= minus;
+    }
+    double shrink = (SIZE+copy_shift) / SIZE;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE + (int)copy_shift; ++j) {
+            image[i][(int)(j/shrink)] = temp[i][j];
+        }
+    }
+}
