@@ -32,6 +32,8 @@ void shrink ();
 void mirrorFilter ();
 void blur ();
 void cropImage ();
+void Enlarge(int c);
+void shuffle();
 void skewUp ();
 
 
@@ -82,11 +84,17 @@ int main()
             case '7':
                 edgeDetector();
                 break;
+            case'8':
+                Enlarge();
+                break;
             case '9':
                 shrink();
                 break;
             case 'a':
                 mirrorFilter();
+                break;
+            case 'b':
+                shuffle();
                 break;
             case 'c':
                 blur();
@@ -449,6 +457,172 @@ void skewUp(){
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE + (int)copy_shift; ++j) {
             image[i][(int)(j/shrink)] = temp[i][j];
+        }
+    }
+}
+void shuffle(){
+    int order=1;
+    for(int k=0;k<4;k++){
+        int c;cin>>c;
+        if(order==1){
+            if(c==1){
+                for(int i=0;i<128;i++){
+                    for(int j=0;j<128;j++){
+                        temp[i][j]=image[i][j];
+                    }
+                }
+            }
+            else if(c==2){
+                for(int i=0;i<128;i++){
+                    for(int j=0;j<128;j++){
+                        temp[i][j]=image[i][j+128];
+                    }
+                }
+            }
+            else if(c==3){
+                for(int i=0;i<128;i++){
+                    for(int j=0;j<128;j++){
+                        temp[i][j]=image[i+128][j];
+                    }
+                }
+            }
+            else if(c==4){
+                for(int i=0;i<128;i++){
+                    for(int j=0;j<128;j++){
+                        temp[i][j]=image[i+128][j+128];
+                    }
+                }
+            }
+            order=2;
+        }
+        else if(order==2){
+            if(c==1){
+                for(int i=0;i<128;i++){
+                    for(int j=128;j<255;j++){
+                        temp[i][j]=image[i][j-128];
+                    }
+                }
+            }
+            else if(c==2){
+                for(int i=0;i<128;i++){
+                    for(int j=128;j<255;j++){
+                        temp[i][j]=image[i][j];
+                    }
+                }
+            }
+            else if(c==3){
+                for(int i=0;i<128;i++){
+                    for(int j=128;j<255;j++){
+                        temp[i][j]=image[i+128][j-128];
+                    }
+                }
+            }
+            else if(c==4){
+                for(int i=0;i<128;i++){
+                    for(int j=128;j<255;j++){
+                        temp[i][j]=image[i+128][j];
+                    }
+                }
+            }
+            order=3;
+        }
+        else if(order==3){
+            if(c==1){
+                for(int i=128;i<255;i++){
+                    for(int j=0;j<128;j++){
+                        temp[i][j]=image[i-128][j];
+                    }
+                }
+            }
+            else if(c==2){
+                for(int i=128;i<255;i++){
+                    for(int j=0;j<128;j++){
+                        temp[i][j]=image[i-128][j+128];
+                    }
+                }
+            }
+            else if(c==3){
+                for(int i=128;i<255;i++){
+                    for(int j=0;j<128;j++){
+                        temp[i][j]=image[i][j];
+                    }
+                }
+            }
+            else if(c==4){
+                for(int i=128;i<255;i++){
+                    for(int j=0;j<128;j++){
+                        temp[i][j]=image[i][j+128];
+                    }
+                }
+            }
+            order=4;
+        }
+        else if(order==4){
+            if(c==1){
+                for(int i=128;i<255;i++){
+                    for(int j=128;j<255;j++){
+                        temp[i][j]=image[i-128][j-128];
+                    }
+                }
+            }
+            else if(c==2){
+                for(int i=128;i<255;i++){
+                    for(int j=128;j<255;j++){
+                        temp[i][j]=image[i-128][j];
+                    }
+                }
+            }
+            else if(c==3){
+                for(int i=128;i<255;i++){
+                    for(int j=128;j<255;j++){
+                        temp[i][j]=image[i][j-128];
+                    }
+                }
+            }
+            else if(c==4){
+                for(int i=128;i<255;i++){
+                    for(int j=128;j<255;j++){
+                        temp[i][j]=image[i][j];
+                    }
+                }
+            }
+        }
+    }
+    for(int i=0;i<SIZE;i++){
+        for(int j=0;j<SIZE;j++){
+            image[i][j]=temp[i][j];
+        }
+    }
+}
+void Enlarge(int c) {
+    if (c == 1) {
+        fr(SIZE) {
+            for (int j = 0; j < SIZE; j++) {
+                temp[i][j] = image[(i / 2)][j / 2];
+            }
+        }
+    } else if (c == 2) {
+        fr(SIZE) {
+            for (int j = 0; j < SIZE; j++) {
+                temp[i][j] = image[(i / 2)][(j / 2) + 128];
+            }
+        }
+    } else if (c == 3) {
+        fr(SIZE) {
+            for (int j = 0; j < SIZE; j++) {
+                temp[i][j] = image[(i / 2) + 128][(j / 2) ];
+            }
+        }
+    } else {
+        fr(SIZE) {
+            for (int j = 0; j < SIZE; j++) {
+                temp[i][j] = image[(i / 2)+128][(j / 2) + 128];
+            }
+        }
+    }
+    fr(SIZE){
+        for(int j=0;j<SIZE;j++){
+            image[i][j]=temp[i][j];
         }
     }
 }
