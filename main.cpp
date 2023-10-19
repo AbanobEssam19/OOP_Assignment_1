@@ -33,6 +33,7 @@ void mirrorFilter ();
 void shuffle();
 void blur ();
 void cropImage ();
+void skewRight ();
 void skewUp ();
 
 
@@ -100,6 +101,9 @@ int main()
                 break;
             case 'd':
                 cropImage();
+                break;
+            case 'e':
+                skewRight();
                 break;
             case 'f':
                 skewUp();
@@ -524,6 +528,33 @@ void cropImage() {
     for (int i = 0; i < SIZE; ++i) { // Coping the cropped image back to the original image
         for (int j = 0; j < SIZE; ++j) {
             image[i][j] = temp[i][j];
+        }
+    }
+}
+
+void skewRight(){
+    double angle;
+    cout << "Enter the angle of skewness:";
+    cin >> angle;
+    double shift = 256 * tan((angle*22)/(180*7)); // Calculating the shift that needs to be applied to the image
+    double copy_shift = shift;
+    double minus = shift / 256;
+    unsigned char temp[SIZE+(int)shift][SIZE]; // Creating a second image to store the skewed image
+    for (int i = 0; i < SIZE + copy_shift; ++i) {  // Initializing the second image to white
+        for (int j = 0; j < SIZE; ++j) {
+            temp[i][j] = 255;
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) { // Coping the original image to the second image shifted by the required amount
+        for (int j = 0; j < SIZE; ++j) {
+            temp[j+(int)shift][i] = image[j][i];
+        }
+        shift -= minus;
+    }
+    double shrink = (SIZE+copy_shift) / SIZE;
+    for (int i = 0; i < SIZE + (int)copy_shift; ++i) { // Coping the skewed image back to the original image and shrinking it
+        for (int j = 0; j < SIZE; ++j) {
+            image[(int)(i/shrink)][j] = temp[i][j];
         }
     }
 }
